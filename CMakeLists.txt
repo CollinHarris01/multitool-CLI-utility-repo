@@ -36,8 +36,10 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(SPDLOG)
 
 # ---- Add executables ----
-add_executable(toolkit
-    src/main.cpp
+add_executable(toolkit src/main.cpp)
+
+target_sources(toolkit PRIVATE
+    src/search_tool.cpp
 )
 
 # ---- Link dependencies ----
