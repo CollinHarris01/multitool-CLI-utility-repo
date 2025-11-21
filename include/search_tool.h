@@ -4,6 +4,16 @@
 #include <string>
 #include <vector>
 
+struct SearchCommand {
+    std::string directory;
+    std::string pattern;
+    bool caseSensitive = false;
+    bool recursive = false;
+    bool verbose = false;
+
+    void run() const;
+};
+
 struct FileMatch {
     std::string filepath;
     int matches;

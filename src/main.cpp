@@ -6,35 +6,6 @@
 
 #include <CLI/CLI.hpp>
 
-// ---- Search Command Struct ----
-struct SearchCommand {
-    std::string directory;
-    std::string pattern;
-    bool caseSensitive = false;
-    bool recursive = false;
-    bool verbose = false;
-
-    void run() const {
-        if (!std::filesystem::exists(directory)) {
-            std::cerr << "Error -> Directory not found: " << directory << std::endl;
-            std::exit(1);
-        }
-
-        auto results = searchInDirectory(directory, pattern, caseSensitive, recursive);
-
-        if (verbose) {
-            for (const auto& match : results) {
-                std::cout << match.filepath << ": " << match.matches << " match"
-                          << (match.matches > 1 ? "es" : "") << std::endl;
-            }
-        } else {
-            int total = 0;
-            for (const auto& match : results) total += match.matches;
-            std::cout << "Matches found: " << total << std::endl;
-        }
-    }
-};
-
 // Function to register "search" CLI11 subcommand
 void registerSearchCommand(CLI::App& app) {
     auto searchCmd = app.add_subcommand("search", "Search for a pattern in files within a directory");
@@ -48,7 +19,7 @@ void registerSearchCommand(CLI::App& app) {
     // Optional flags
     searchCmd->add_flag("--case", cmd.caseSensitive, "Enable case-sensitive matches");
     searchCmd->add_flag("-R,--recursive", cmd.recursive, "Enable recursive directory search");
-    searchCmd->add_flag("-v,--verbose", cmd.verbose, "Print matches to stdout");
+    searchCmd->add_flag("-v,--verbose", cmd.verbose, "Print matches per file to terminal");
 
     // CLI11 callback calls run() on SearchCommand struct
     searchCmd->callback([&]() { cmd.run(); });

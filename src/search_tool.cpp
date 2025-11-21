@@ -5,6 +5,26 @@
 #include <fstream>
 #include <iostream>
 
+void SearchCommand::run() const {
+    if (!std::filesystem::exists(directory)) {
+        std::cerr << "Error -> Directory not found: " << directory << std::endl;
+        std::exit(1);
+    }
+
+    auto results = searchInDirectory(directory, pattern, caseSensitive, recursive);
+
+    if (verbose) {
+        for (const auto& match : results) {
+            std::cout << match.filepath << ": " << match.matches << " match"
+                      << (match.matches > 1 ? "es" : "") << std::endl;
+        }
+    } else {
+        int total = 0;
+        for (const auto& match : results) total += match.matches;
+        std::cout << "Matches found: " << total << std::endl;
+    }
+}
+
 // Helper: Convert string to lowercase
 std::string toLower(const std::string& str) {
     std::string result = str;
