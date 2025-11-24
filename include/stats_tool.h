@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+namespace fs = std::filesystem;
+
 struct StatsCommand {
     std::string targetPath;
 
@@ -30,11 +32,11 @@ struct DirectoryTotals {
     std::uintmax_t totalSize;
 };
 
-// Stats Tool helper functions
+// Stats Tool API functions
 DirectoryTotals computeDirectoryTotals(const std::string& directory);
 std::vector<FileSummary> listImmediateFiles(const std::string& directory);
 std::vector<SubdirSummary> listImmediateSubdirs(const std::string& directory);
 std::string formatSize(std::uintmax_t bytes);
-std::string formatFileTime(const std::filesystem::file_time_type& ft);
+std::string formatFileTime(const fs::file_time_type& ft);
 
 #endif

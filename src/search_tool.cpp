@@ -5,26 +5,7 @@
 #include <fstream>
 #include <iostream>
 
-// Run command for SearchTool
-void SearchCommand::run() const {
-    if (!std::filesystem::exists(directory)) {
-        std::cerr << "Error -> Directory not found: " << directory << std::endl;
-        std::exit(1);
-    }
-
-    auto results = searchInDirectory(directory, pattern, caseSensitive, recursive);
-
-    if (verbose) {
-        for (const auto& match : results) {
-            std::cout << match.filepath << ": " << match.matches << " match"
-                      << (match.matches > 1 ? "es" : "") << std::endl;
-        }
-    } else {
-        int total = 0;
-        for (const auto& match : results) total += match.matches;
-        std::cout << "Matches found: " << total << std::endl;
-    }
-}
+namespace fs = std::filesystem;
 
 // Helper: Convert string to lowercase
 std::string toLower(const std::string& str) {
@@ -57,6 +38,7 @@ int searchInFile(const std::string& filepath, const std::string& pattern, bool c
     return matchCount;
 }
 
+// Search all occurrences in specified directory
 std::vector<FileMatch> searchInDirectory(const std::string& directory,
                                          const std::string& pattern,
                                          bool caseSensitive,
@@ -64,10 +46,10 @@ std::vector<FileMatch> searchInDirectory(const std::string& directory,
     std::vector<FileMatch> results;
 
     try {
-        std::filesystem::directory_options options = std::filesystem::directory_options::skip_permission_denied;
+        fs::directory_options options = fs::directory_options::skip_permission_denied;
 
         if (recursive) {
-            for (const auto& entry : std::filesystem::recursive_directory_iterator(directory, options)) {
+            for (const auto& entry : fs::recursive_directory_iterator(directory, options)) {
                 if (entry.is_regular_file()) {
                     int matches = searchInFile(entry.path().string(), pattern, caseSensitive);
                     if (matches > 0)
@@ -75,7 +57,7 @@ std::vector<FileMatch> searchInDirectory(const std::string& directory,
                 }
             }
         } else {
-            for (const auto& entry : std::filesystem::directory_iterator(directory, options)) {
+            for (const auto& entry : fs::directory_iterator(directory, options)) {
                 if (entry.is_regular_file()) {
                     int matches = searchInFile(entry.path().string(), pattern, caseSensitive);
                     if (matches > 0)
@@ -83,9 +65,30 @@ std::vector<FileMatch> searchInDirectory(const std::string& directory,
                 }
             }
         }
-    } catch (const std::filesystem::filesystem_error& e) {
+    } catch (const fs::filesystem_error& e) {
         std::cerr << "Filesystem error: " << e.what() << std::endl;
     }
 
     return results;
+}
+
+// Run command for SearchTool
+void SearchCommand::run() const {
+    if (!fs::exists(directory)) {
+        std::cerr << "Error -> Directory not found: " << directory << std::endl;
+        std::exit(1);
+    }
+
+    auto results = searchInDirectory(directory, pattern, caseSensitive, recursive);
+
+    if (verbose) {
+        for (const auto& match : results) {
+            std::cout << match.filepath << ": " << match.matches << " match"
+                      << (match.matches > 1 ? "es" : "") << std::endl;
+        }
+    } else {
+        int total = 0;
+        for (const auto& match : results) total += match.matches;
+        std::cout << "Matches found: " << total << std::endl;
+    }
 }

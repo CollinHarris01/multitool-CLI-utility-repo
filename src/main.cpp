@@ -9,9 +9,9 @@
 
 // Function to register "search" CLI11 subcommand
 void registerSearchCommand(CLI::App& app) {
-    auto searchSub = app.add_subcommand("search", "Search for a pattern in files within a directory");
-
     static SearchCommand searchCmd;
+
+    auto searchSub = app.add_subcommand("search", "Search for a pattern in files within a directory");
 
     // Required positional arguments
     searchSub->add_option("directory", searchCmd.directory, "Directory to search")->required();
@@ -28,9 +28,9 @@ void registerSearchCommand(CLI::App& app) {
 
 // Function to register "stats" CLI11 subcommand
 void registerStatsCommand(CLI::App& app) {
-    auto statsSub = app.add_subcommand("stats", "Show file/directory statistics");
-
     static StatsCommand statsCmd;
+
+    auto statsSub = app.add_subcommand("stats", "Show file/directory statistics");
 
     // Required positional arguments
     statsSub->add_option("path", statsCmd.targetPath, "File or directory to inspect")->required();
