@@ -10,6 +10,8 @@ Features:
     --case flag toggles case sensitivity
     --recursive flag toggles recursive directory search
     --verbose flag toggles output to show matches per file
+2. "stats" command searches a directory or file for contents and size statistics.
+    Structure -> toolkit stats <path> 
 
 From project root directory: 
 1.	Configure -> cmake --preset default

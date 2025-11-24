@@ -40,6 +40,7 @@ add_executable(toolkit src/main.cpp)
 
 target_sources(toolkit PRIVATE
     src/search_tool.cpp
+    src/stats_tool.cpp
 )
 
 # ---- Link dependencies ----

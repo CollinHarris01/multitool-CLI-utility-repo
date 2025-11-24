@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 
+// Run command for SearchTool
 void SearchCommand::run() const {
     if (!std::filesystem::exists(directory)) {
         std::cerr << "Error -> Directory not found: " << directory << std::endl;
