@@ -12,6 +12,9 @@ Features:
     --verbose flag toggles output to show matches per file
 2. "stats" command searches a directory or file for contents and size statistics.
     Structure -> toolkit stats <path> 
+3. "hash" command computes SHA-256 values for a file or all files in a directory.
+    Structure -> toolkit hash <path> --recursive
+    --recursive flag toggles recursive directory hashing
 
 From project root directory: 
 1.	Configure -> cmake --preset default

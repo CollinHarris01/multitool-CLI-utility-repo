@@ -77,7 +77,7 @@ std::vector<FileMatch> searchInDirectory(const std::string& directory,
 // Run command for SearchTool
 void SearchCommand::run() const {
     if (!fs::exists(directory)) {
-        std::cerr << "Error -> Directory not found: " << directory << std::endl;
+        std::cerr << "Error: Directory not found: " << directory << std::endl;
         std::exit(1);
     }
 
