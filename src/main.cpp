@@ -2,6 +2,7 @@
 #include "../include/stats_tool.h"
 #include "../include/hash_tool.h"
 #include "../include/copy_tool.h"
+#include "../include/move_tool.h"
 
 #include <filesystem>
 #include <iostream>
@@ -75,6 +76,24 @@ void registerCopyCommand(CLI::App& app) {
     copySub->callback([&]() { copyCmd.run(); });
 }
 
+// Register "move" CLI11 command
+void registerMoveCommand(CLI::App& app) {
+    static MoveCommand moveCmd;
+
+    auto moveSub = app.add_subcommand("move", "Move a file or directory");
+
+    // Required positional arguments
+    moveSub->add_option("source", moveCmd.sourcePath, "Source file/directory")->required();
+    moveSub->add_option("destination", moveCmd.destinationPath, "Destination path")->required();
+
+    // Optional flags
+    moveSub->add_flag("--force", moveCmd.force, "Overwrite if destination exists");
+    moveSub->add_flag("-R,--recursive", moveCmd.recursive, "Allow recursive directory moving");
+
+    // CLI11 callback calls run() on MoveCommand struct
+    moveSub->callback([&]() { moveCmd.run(); });
+}
+
 // ---- Main ----
 int main(int argc, char** argv) {
     // Create CLI application
@@ -85,6 +104,7 @@ int main(int argc, char** argv) {
     registerStatsCommand(app);
     registerHashCommand(app);
     registerCopyCommand(app);
+    registerMoveCommand(app);
 
     // Parse CLI input
     CLI11_PARSE(app, argc, argv);

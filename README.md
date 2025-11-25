@@ -19,6 +19,10 @@ Features:
     Structure -> toolkit copy <source> <destination> --force --recursive
     --force flag overwrites destination files if they already exist
     --recursive flag enables recursive directory copying
+5. "move" command moves a file or directory from one location to another.
+    Structure -> toolkit move <source> <destination> --force --recursive
+    --force flag overwrites desination if it already exists
+    --recursive flag allows recursive directory moving
 
 From project root directory: 
 1.	Configure -> cmake --preset default
