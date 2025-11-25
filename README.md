@@ -15,6 +15,10 @@ Features:
 3. "hash" command computes SHA-256 values for a file or all files in a directory.
     Structure -> toolkit hash <path> --recursive
     --recursive flag toggles recursive directory hashing
+4. "copy" command copies a source file or directory to another location.
+    Structure -> toolkit copy <source> <destination> --force --recursive
+    --force flag overwrites destination files if they already exist
+    --recursive flag enables recursive directory copying
 
 From project root directory: 
 1.	Configure -> cmake --preset default
