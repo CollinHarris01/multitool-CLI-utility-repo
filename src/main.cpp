@@ -1,5 +1,6 @@
 #include "../include/search_tool.h"
 #include "../include/stats_tool.h"
+#include "../include/hash_tool.h"
 
 #include <filesystem>
 #include <iostream>
@@ -7,7 +8,7 @@
 
 #include <CLI/CLI.hpp>
 
-// Function to register "search" CLI11 subcommand
+// Register "search" CLI11 subcommand
 void registerSearchCommand(CLI::App& app) {
     static SearchCommand searchCmd;
 
@@ -26,7 +27,7 @@ void registerSearchCommand(CLI::App& app) {
     searchSub->callback([&]() { searchCmd.run(); });
 }
 
-// Function to register "stats" CLI11 subcommand
+// Register "stats" CLI11 subcommand
 void registerStatsCommand(CLI::App& app) {
     static StatsCommand statsCmd;
 
@@ -39,6 +40,22 @@ void registerStatsCommand(CLI::App& app) {
     statsSub->callback([&]() { statsCmd.run(); });
 }
 
+// Register "hash" CLI11 sucommand
+void registerHashCommand(CLI::App& app) {
+    static HashCommand hashCmd;
+
+    auto hashSub = app.add_subcommand("hash", "Compute SHA-256 hash values for files in a directory");
+
+    // Require positional arguments
+    hashSub->add_option("path", hashCmd.targetPath, "File or directory to hash")->required();
+
+    // Optional flags
+    hashSub->add_flag("-R,--recursive", hashCmd.recursive, "Enable recursive directory hashing");
+
+    // CLI11 callback calls run() on HashCommand struct
+    hashSub->callback([&]() { hashCmd.run(); });
+}
+
 // ---- Main ----
 int main(int argc, char** argv) {
     // Create CLI application
@@ -47,6 +64,7 @@ int main(int argc, char** argv) {
     // Register subcommands
     registerSearchCommand(app);
     registerStatsCommand(app);
+    registerHashCommand(app);
 
     // Parse CLI input
     CLI11_PARSE(app, argc, argv);

@@ -1,11 +1,14 @@
 #include "../include/stats_tool.h"
 
 #include <algorithm>
+#include <cstdint>
 #include <chrono>
 #include <filesystem>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+#include <string>
+#include <vector>
 
 namespace fs = std::filesystem;
 

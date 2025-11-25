@@ -32,7 +32,7 @@ struct DirectoryTotals {
     std::uintmax_t totalSize;
 };
 
-// Stats Tool API functions
+// Stats tool helper functions
 DirectoryTotals computeDirectoryTotals(const std::string& directory);
 std::vector<FileSummary> listImmediateFiles(const std::string& directory);
 std::vector<SubdirSummary> listImmediateSubdirs(const std::string& directory);

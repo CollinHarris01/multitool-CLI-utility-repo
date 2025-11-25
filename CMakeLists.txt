@@ -41,6 +41,8 @@ add_executable(toolkit src/main.cpp)
 target_sources(toolkit PRIVATE
     src/search_tool.cpp
     src/stats_tool.cpp
+    src/sha256.cpp
+    src/hash_tool.cpp
 )
 
 # ---- Link dependencies ----
