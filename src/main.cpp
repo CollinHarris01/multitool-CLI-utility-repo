@@ -1,6 +1,7 @@
 #include "../include/search_tool.h"
 #include "../include/stats_tool.h"
 #include "../include/hash_tool.h"
+#include "../include/copy_tool.h"
 
 #include <filesystem>
 #include <iostream>
@@ -56,6 +57,24 @@ void registerHashCommand(CLI::App& app) {
     hashSub->callback([&]() { hashCmd.run(); });
 }
 
+// Register "copy" CLI11 sucommand
+void registerCopyCommand(CLI::App& app) {
+    static CopyCommand copyCmd;
+
+    auto copySub = app.add_subcommand("copy", "Copy a file or directory to another location");
+
+    // Required positional arguments
+    copySub->add_option("source", copyCmd.sourcePath, "Source file/directory to copy")->required();
+    copySub->add_option("destination", copyCmd.destinationPath, "Destination for copied file/directory")->required();
+
+    // Optional flags
+    copySub->add_flag("-R,--recursive", copyCmd.recursive, "Enable recursive directory copying");
+    copySub->add_flag("--force", copyCmd.force, "Overwrite destination files if they already exist");
+
+    // CLI11 callback calls run() on CopyCommand struct
+    copySub->callback([&]() { copyCmd.run(); });
+}
+
 // ---- Main ----
 int main(int argc, char** argv) {
     // Create CLI application
@@ -65,6 +84,7 @@ int main(int argc, char** argv) {
     registerSearchCommand(app);
     registerStatsCommand(app);
     registerHashCommand(app);
+    registerCopyCommand(app);
 
     // Parse CLI input
     CLI11_PARSE(app, argc, argv);

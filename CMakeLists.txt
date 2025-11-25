@@ -43,6 +43,7 @@ target_sources(toolkit PRIVATE
     src/stats_tool.cpp
     src/sha256.cpp
     src/hash_tool.cpp
+    src/copy_tool.cpp
 )
 
 # ---- Link dependencies ----

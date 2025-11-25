@@ -6,7 +6,6 @@
 
 namespace fs = std::filesystem;
 
-// Represents the hash command like your other tools
 struct HashCommand {
     std::string targetPath;
     bool recursive;
