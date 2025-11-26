@@ -23,6 +23,10 @@ Features:
     Structure -> toolkit move <source> <destination> --force --recursive
     --force flag overwrites desination if it already exists
     --recursive flag allows recursive directory moving
+6. "remove" command deletes a file or directory.
+    Structure -> toolkit remove <path> --force --recursive
+    --force flag deletes without the confirmation prompt
+    --recursive flag required to recursively deleted directories
 
 From project root directory: 
 1.	Configure -> cmake --preset default

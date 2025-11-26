@@ -3,6 +3,7 @@
 #include "../include/hash_tool.h"
 #include "../include/copy_tool.h"
 #include "../include/move_tool.h"
+#include "../include/remove_tool.h"
 
 #include <filesystem>
 #include <iostream>
@@ -22,7 +23,7 @@ void registerSearchCommand(CLI::App& app) {
 
     // Optional flags
     searchSub->add_flag("--case", searchCmd.caseSensitive, "Enable case-sensitive matches");
-    searchSub->add_flag("-R,--recursive", searchCmd.recursive, "Enable recursive directory search");
+    searchSub->add_flag("-r,--recursive", searchCmd.recursive, "Enable recursive directory search");
     searchSub->add_flag("-v,--verbose", searchCmd.verbose, "Print matches per file to terminal");
 
     // CLI11 callback calls run() on SearchCommand struct
@@ -52,7 +53,7 @@ void registerHashCommand(CLI::App& app) {
     hashSub->add_option("path", hashCmd.targetPath, "File or directory to hash")->required();
 
     // Optional flags
-    hashSub->add_flag("-R,--recursive", hashCmd.recursive, "Enable recursive directory hashing");
+    hashSub->add_flag("-r,--recursive", hashCmd.recursive, "Enable recursive directory hashing");
 
     // CLI11 callback calls run() on HashCommand struct
     hashSub->callback([&]() { hashCmd.run(); });
@@ -69,8 +70,8 @@ void registerCopyCommand(CLI::App& app) {
     copySub->add_option("destination", copyCmd.destinationPath, "Destination for copied file/directory")->required();
 
     // Optional flags
-    copySub->add_flag("-R,--recursive", copyCmd.recursive, "Enable recursive directory copying");
-    copySub->add_flag("--force", copyCmd.force, "Overwrite destination files if they already exist");
+    copySub->add_flag("-r,--recursive", copyCmd.recursive, "Enable recursive directory copying");
+    copySub->add_flag("-f,--force", copyCmd.force, "Overwrite destination files if they already exist");
 
     // CLI11 callback calls run() on CopyCommand struct
     copySub->callback([&]() { copyCmd.run(); });
@@ -87,11 +88,28 @@ void registerMoveCommand(CLI::App& app) {
     moveSub->add_option("destination", moveCmd.destinationPath, "Destination path")->required();
 
     // Optional flags
-    moveSub->add_flag("--force", moveCmd.force, "Overwrite if destination exists");
-    moveSub->add_flag("-R,--recursive", moveCmd.recursive, "Allow recursive directory moving");
+    moveSub->add_flag("-f,--force", moveCmd.force, "Overwrite if destination exists");
+    moveSub->add_flag("-r,--recursive", moveCmd.recursive, "Allow recursive directory moving");
 
     // CLI11 callback calls run() on MoveCommand struct
     moveSub->callback([&]() { moveCmd.run(); });
+}
+
+// Register "remove" CLI11 subcommand
+void registerRemoveCommand(CLI::App& app) {
+    static RemoveCommand removeCmd;
+
+    auto removeSub = app.add_subcommand("remove", "Delete a file or directory");
+
+    // Requied positional arguments
+    removeSub->add_option("path", removeCmd.targetPath, "Path to file or directory to delete")->required();
+
+    // Optional flags
+    removeSub->add_flag("-r,--recursive", removeCmd.recursive, "Recursively delete directories");
+    removeSub->add_flag("-f,--force", removeCmd.force, "Delete without confirmation prompt");
+
+    // CLI11 callback calls run() on RemoveCommand struct
+    removeSub->callback([&]() { removeCmd.run(); });
 }
 
 // ---- Main ----
@@ -105,6 +123,7 @@ int main(int argc, char** argv) {
     registerHashCommand(app);
     registerCopyCommand(app);
     registerMoveCommand(app);
+    registerRemoveCommand(app);
 
     // Parse CLI input
     CLI11_PARSE(app, argc, argv);

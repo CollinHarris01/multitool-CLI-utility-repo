@@ -45,6 +45,7 @@ target_sources(toolkit PRIVATE
     src/hash_tool.cpp
     src/copy_tool.cpp
     src/move_tool.cpp
+    src/remove_tool.cpp
 )
 
 # ---- Link dependencies ----
