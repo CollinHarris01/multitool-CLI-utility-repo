@@ -4,6 +4,7 @@
 #include "../include/copy_tool.h"
 #include "../include/move_tool.h"
 #include "../include/remove_tool.h"
+#include "../include/tree_tool.h"
 
 #include <filesystem>
 #include <iostream>
@@ -112,6 +113,22 @@ void registerRemoveCommand(CLI::App& app) {
     removeSub->callback([&]() { removeCmd.run(); });
 }
 
+// Register "tree" CLI11 subcommand
+void registerTreeCommand(CLI::App& app) {
+    static TreeCommand treeCmd;
+
+    auto treeSub = app.add_subcommand("tree", "Display directory structure as an ASCII tree");
+
+    // Required positional arguments
+    treeSub->add_option("path", treeCmd.path, "Directory path to display")->required();
+
+    // Optional flags
+    treeSub->add_flag("--dirs-only", treeCmd.dirsOnly, "Display only directories");
+
+    // CLI11 callback calls run() on TreeCommand struct
+    treeSub->callback([&]() { treeCmd.run(); });
+}
+
 // ---- Main ----
 int main(int argc, char** argv) {
     // Create CLI application
@@ -124,6 +141,7 @@ int main(int argc, char** argv) {
     registerCopyCommand(app);
     registerMoveCommand(app);
     registerRemoveCommand(app);
+    registerTreeCommand(app);
 
     // Parse CLI input
     CLI11_PARSE(app, argc, argv);

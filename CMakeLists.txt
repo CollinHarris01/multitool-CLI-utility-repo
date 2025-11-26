@@ -19,14 +19,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(CLI11)
 
-# nlohmann JSON
-FetchContent_Declare(
-    JSON
-    GIT_REPOSITORY https://github.com/nlohmann/json.git
-    GIT_TAG v3.11.3
-)
-FetchContent_MakeAvailable(JSON)
-
 # spdlog
 FetchContent_Declare(
     SPDLOG
@@ -46,12 +38,12 @@ target_sources(toolkit PRIVATE
     src/copy_tool.cpp
     src/move_tool.cpp
     src/remove_tool.cpp
+    src/tree_tool.cpp
 )
 
 # ---- Link dependencies ----
 target_link_libraries(toolkit PRIVATE
     CLI11::CLI11
-    nlohmann_json::nlohmann_json
     spdlog::spdlog
 )
 
