@@ -36,4 +36,4 @@ From project root directory:
 2.	Build -> cmake --build build/default
 3.	Run -> ./build/default/toolkit
 4.	Build Tests -> cmake --build build/default --target unit_tests
-5.	Run TestS -> ctest --test-dir build/default
+5.	Run Tests -> ctest --test-dir build/default
